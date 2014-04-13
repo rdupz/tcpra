@@ -1,11 +1,12 @@
 #tcpra
 TCP Reordering Analysis
-#==================================================
+#===
 Ce programme analyse des traces TCP capturées afin de trouver les paquets TCP qui sont reçu en mauvais ordre, et le “retard” de ces paquets.
-#--------------------------------------------------
+#----
 #Installation
 
 Dépendances : *libpcap* *libpcap-dev*
+
 Se placer dans le repertoire contenant la makefile et taper `make`.
 Cette commande va générer un binaire executable nommé `tcpra`.
 
@@ -45,6 +46,6 @@ Une fois tous les paquets ajoutés à la liste, le calcul des retards commence. 
 Il arrive cependant que le paquet recherché ne soit pas présent du tout dans la trame capturée. Ceci entraîne donc une recherche assez longue puisque parcourant la totalité des paquets restant. On choisit donc de limiter la recherche aux *maxlate* paquets suivants. Les pires retards que l’on a pu observés étaient de l’ordre de 200 paquets, mais on a quand même choisi un maxlate par défaut de 10000, ce qui constitue un bon compromis entre performance et justesse de l’algorithme.
 Le programme offre la possibilité, avec l’option -w, d’écrire dans un fichier ‘.lost’ les paquets considérés comme perdus car non trouvés durant la recherche (soit parce qu’il ne sont pas du tout présents dans la trame, soit parce que leur retard est supérieur à *maxlate*).
 
-##Précisions quant au format des trames
+###Précisions quant au format des trames
 Les trames analysées par le programme doivent avoir l’extension ‘.pcap’. Les paquets dont l’ordre sera analysé sont ceux dont la destination est la même que celle du premier paquet SYN-ACK de la trame et dont le payload n’est pas nul.
 En d’autres termes, le programme détecte l’IP qui va recevoir les données en cherchant le destinataire du premier paquet SYN-ACK de la trame. Il se concentre ensuite uniquement sur les paquets qui lui sont destinés. De plus, il ignore les paquets ne contenant aucune charge utile.
